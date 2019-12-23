@@ -11,6 +11,7 @@
 #include <arpa/inet.h>
 #include <netdb.h> 
 #define SOCKET int
+#define Sleep(msec) usleep(msec*1000)
 #endif
 
 #define CONNECT_TIMEOUT	5000		// 5 秒

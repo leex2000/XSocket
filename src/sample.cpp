@@ -1,4 +1,6 @@
 ﻿#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "xsocket.h"
 
 void test()
@@ -70,7 +72,7 @@ void do_server(int port)
 			}
 
 			printf("RECV[%d]: %s\n", ret, buffer);
-			strcat_s(buffer, 4096, " <<<");
+			strcat(buffer, " <<<");
 			ret = client.send(buffer);
 			if (ret <= 0)
 			{
