@@ -10,6 +10,7 @@
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
 #include <netdb.h> 
+#define SOCKET int
 #endif
 
 #define CONNECT_TIMEOUT	5000		// 5 √Î

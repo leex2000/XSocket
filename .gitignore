@@ -2,6 +2,9 @@
 .vs/
 x64/
 
+!build/README
+build/
+
 # Prerequisites
 *.d
 
