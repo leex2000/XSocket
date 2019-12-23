@@ -1,4 +1,4 @@
-#ifndef __XSocket__
+ï»¿#ifndef __XSocket__
 #define __XSocket__
 
 #ifdef _WIN32
@@ -13,13 +13,13 @@
 #define SOCKET int
 #endif
 
-#define CONNECT_TIMEOUT	5000		// 5 Ãë
-#define SEND_TIMEOUT	10000		// 10 Ãë
-#define RECV_TIMEOUT	10000		// 10 Ãë
+#define CONNECT_TIMEOUT	5000		// 5 ç§’
+#define SEND_TIMEOUT	10000		// 10 ç§’
+#define RECV_TIMEOUT	10000		// 10 ç§’
 
 void show_error(int errcode);
 
-// ·µ»ØÖµ > 0 ±íÊ¾ÕýÈ·£¬0 ±íÊ¾³¬Ê±£¬< 0 ±íÊ¾´íÎó
+// è¿”å›žå€¼ > 0 è¡¨ç¤ºæ­£ç¡®ï¼Œ0 è¡¨ç¤ºè¶…æ—¶ï¼Œ< 0 è¡¨ç¤ºé”™è¯¯
 class XSocket
 {
 public:
