@@ -6,15 +6,20 @@
 #include <ws2tcpip.h>
 #else
 #include <sys/socket.h>
+#include <sys/ioctl.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
-#include <netdb.h> 
+#include <unistd.h>
+#include <netdb.h>
+#include <errno.h>
 #define SOCKET int
+#define INVALID_SOCKET -1
 #define Sleep(msec) usleep(msec*1000)
+#define closesocket ::close
 #endif
 
-#define CONNECT_TIMEOUT	5000		// 5 秒
+#define CONNECT_TIMEOUT	5000		// 5 秒 
 #define SEND_TIMEOUT	10000		// 10 秒
 #define RECV_TIMEOUT	10000		// 10 秒
 

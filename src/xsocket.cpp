@@ -1,5 +1,6 @@
 ﻿#define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <stdio.h>
+#include <memory.h>
 #include "xsocket.h"
 
 #ifdef _WIN32
@@ -52,6 +53,7 @@ public:
 
 	void dump()
 	{
+#ifdef _WIN32		
 		if (!info)
 			return;
 
@@ -147,6 +149,7 @@ public:
 			printf("\tLength of this sockaddr: %d\n", (int)ptr->ai_addrlen);
 			printf("\tCanonical name: %s\n", ptr->ai_canonname);
 		}
+#endif
 	}
 
 	bool getinfo(const char* address, int port)

@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
 	{
 		do_server(port);
 	}
-	else if (argc == 1)
+	else
 	{
 		do_client(argv[1], port);
 	}
