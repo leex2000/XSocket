@@ -13,19 +13,20 @@
 #include <unistd.h>
 #include <netdb.h>
 #include <errno.h>
+
 #define SOCKET int
 #define INVALID_SOCKET -1
 #define Sleep(msec) usleep(msec*1000)
 #define closesocket ::close
 #endif
 
-#define CONNECT_TIMEOUT	5000		// 5 秒 
-#define SEND_TIMEOUT	10000		// 10 秒
-#define RECV_TIMEOUT	10000		// 10 秒
+#define CONNECT_TIMEOUT	5000		// 5 sec
+#define SEND_TIMEOUT	10000		// 10 sec
+#define RECV_TIMEOUT	10000		// 10 sec
 
 void show_error(int errcode);
 
-// 返回值 > 0 表示正确，0 表示超时，< 0 表示错误
+// Return: > 0 success，= 0 timeout，< 0 error
 class XSocket
 {
 public:

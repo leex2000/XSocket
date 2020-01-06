@@ -10,7 +10,7 @@
 
 // ==========================================================================================
 
-// Windows Socket 组件初始化类，自动加载和卸载 Windows Socket 组件
+// Windows socket auto init and clean
 class Win32InitSocket
 {
 private:
@@ -36,6 +36,7 @@ Win32InitSocket auto_init_win32_socket;
 
 // ==========================================================================================
 
+// dns
 class XDns
 {
 public:
@@ -193,7 +194,7 @@ void show_error(int errcode)
 	char buffer[1024];
 
 	if (FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, errcode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), buffer, sizeof(buffer), NULL) == 0)
-		printf("[%d]: (错误未知)\n", errcode);
+		printf("[%d]: (Unknown)\n", errcode);
 	else
 		printf("[%d] %s\n", errcode, buffer);
 #else
@@ -217,7 +218,7 @@ XSocket::~XSocket()
 	close();
 }
 
-// 返回负值的错误码
+// get error code (< 0)
 int XSocket::get_error_code()
 {
 	int errcode;
@@ -229,13 +230,11 @@ int XSocket::get_error_code()
 	return -errcode;
 }
 
-// 是否已打开
 bool XSocket::is_open()
 {
 	return(hsocket != INVALID_SOCKET);
 }
 
-// 是否处于延迟状态
 bool XSocket::is_pending(int errcode)
 {
 	errcode = -errcode;
@@ -250,7 +249,6 @@ bool XSocket::is_pending(int errcode)
 	return false;
 }
 
-// 是否处于延迟状态
 void XSocket::close()
 {
 	if (hsocket != INVALID_SOCKET)
@@ -262,13 +260,13 @@ void XSocket::close()
 
 int XSocket::listen(int port)
 {
-	//  1. 创建 socket
+	//  1. create socket
 	close();
 	hsocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (hsocket == INVALID_SOCKET)
 		return get_error_code();
 
-	// 2. 绑定端口
+	// 2. bind port
 	sockaddr_in saddr;
 	saddr.sin_family = AF_INET;
 	saddr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -277,7 +275,7 @@ int XSocket::listen(int port)
 	if (::bind(hsocket, (const sockaddr*)&saddr, sizeof(saddr)) < 0)
 		return get_error_code();
 
-	// 3. 监听
+	// 3. listen
 	if (::listen(hsocket, SOMAXCONN) < 0)
 		return get_error_code();
 
@@ -287,7 +285,7 @@ int XSocket::listen(int port)
 int XSocket::accept(XSocket& newsocket)
 {
 	newsocket.close();
-	newsocket.hsocket = ::accept(hsocket, NULL, NULL);		// 如果返回的是 INVALID_SOCKET, 不需要做什么
+	newsocket.hsocket = ::accept(hsocket, NULL, NULL);
 	if (newsocket.hsocket == INVALID_SOCKET)
 		return get_error_code();
 
@@ -354,23 +352,22 @@ int XSocket::wait(int& status, int timeout)
 	return 1;
 }
 
-// 返回 0 表示成功
 int XSocket::open(const char* address, int port, int timeout)
 {
 	int errcode;
 
-	//  1. 创建 socket
+	//  1. create socket
 	close();
 	hsocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (hsocket == INVALID_SOCKET)
 		return get_error_code();
 
-	// 2. dns 解析
+	// 2. dns resolution
 	XDns xdns;
 	if (!xdns.getinfo(address, port))
 		return get_error_code();
 
-	// 3. 设置为非阻塞模式
+	// 3. set to non-blocking mode
 	int opt = 1;
 #ifdef _WIN32
 	if (ioctlsocket(hsocket, FIONBIO, (unsigned long *)&opt) < 0)
@@ -379,7 +376,7 @@ int XSocket::open(const char* address, int port, int timeout)
 #endif
 		return get_error_code();
 
-	// 4. 连接
+	// 4. connect
 	if (::connect(hsocket, (const sockaddr *)xdns.info->ai_addr, sizeof(sockaddr)) < 0)
 	{
 		errcode = get_error_code();
@@ -392,11 +389,11 @@ int XSocket::open(const char* address, int port, int timeout)
 			return errcode;
 	}
 
-	// 连接成功
+	// success
 	return 1;
 }
 
-// 返回发送的长度
+// > 0 means send len
 int XSocket::send(const void* buffer, int length, int timeout)
 {
 	int left, written;
@@ -421,13 +418,13 @@ int XSocket::send(const void* buffer, int length, int timeout)
 	return(length - left);
 }
 
-// 返回发送的长度，错误码用负值返回
+// > 0 means send len
 int XSocket::send(const char* buffer, int timeout)
 {
 	return send(buffer, (int)strlen(buffer), timeout);
 }
 
-// 返回读取的长度，错误码用负值返回
+// > 0 means recv len
 int XSocket::recv(void* buffer, int length, int timeout)
 {
 	//int status = XSOCKET_READ;
