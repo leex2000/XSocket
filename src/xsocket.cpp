@@ -341,7 +341,7 @@ int XSocket::wait(int& status, int timeout)
 		if (FD_ISSET(hsocket, &exception_fds))
 			nstatus |= XSOCKET_EXCEPTION;
 
-	printf("status: %d -> %d\n", status, nstatus);
+	//printf("status: %d -> %d\n", status, nstatus);
 
 	int len = sizeof(int);
 	getsockopt(hsocket, SOL_SOCKET, SO_ERROR, (char*)&errcode, (socklen_t *)&len);
