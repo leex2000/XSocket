@@ -4,6 +4,7 @@
 #ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#define STRDUP _strdup
 #else
 #include <sys/socket.h>
 #include <sys/ioctl.h>
@@ -18,6 +19,7 @@
 #define INVALID_SOCKET -1
 #define Sleep(msec) usleep(msec*1000)
 #define closesocket ::close
+#define STRDUP strdup
 #endif
 
 #define CONNECT_TIMEOUT	5000		// 5 sec

@@ -178,7 +178,7 @@ int TlsSocket::get_server_cert(char* buffer, int length)
 void TlsSocket::set_cert(const char* cert_pem)
 {
 	if (cert_pem)
-		this->cert_pem = _strdup(cert_pem);
+		this->cert_pem = STRDUP(cert_pem);
 }
 
 int TlsSocket::ssl_send(void *ctx, const unsigned char *buffer, size_t length)
